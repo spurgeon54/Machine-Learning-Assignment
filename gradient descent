@@ -1,0 +1,44 @@
+def gradient_descent(x, y, learning_rate, epochs, batch_size=None):
+    n = len(x)
+    beta_0 = 0
+    beta_1 = 0
+    loss_history = []
+
+    for epoch in range(epochs):
+        y_pred = beta_0 + beta_1 * x
+
+        grad_beta_0 = -2 * np.sum(y - y_pred) / n
+        grad_beta_1 = -2 * np.sum(x * (y - y_pred)) / n
+
+        beta_0 -= learning_rate * grad_beta_0
+        beta_1 -= learning_rate * grad_beta_1
+
+        loss = np.sum((y - y_pred)**2) / n
+        loss_history.append(loss)
+
+        if batch_size is not None and (epoch + 1) % batch_size == 0:
+            print(f"Epoch {epoch + 1}/{epochs}, Loss: {loss}")
+
+    return beta_0, beta_1, loss_history
+
+
+learning_rate = 0.01
+epochs = 1000
+beta_0_full, beta_1_full, loss_history_full = gradient_descent(x, y, learning_rate, epochs)
+
+beta_0_stochastic, beta_1_stochastic, loss_history_stochastic = gradient_descent(x, y, learning_rate, epochs, batch_size=1)
+
+
+y_pred_full = beta_0_full + beta_1_full * x
+sse_full = np.sum((y - y_pred_full)**2)
+r_squared_full = 1 - (sse_full / ss_total)
+
+y_pred_stochastic = beta_0_stochastic + beta_1_stochastic * x
+sse_stochastic = np.sum((y - y_pred_stochastic)**2)
+r_squared_stochastic = 1 - (sse_stochastic / ss_total)
+print(beta_0_full, beta_1_full)
+print(sse_full)
+print(r_squared_full)
+print(beta_0_stochastic, beta_1_stochastic)
+print(sse_stochastic)
+print(r_squared_stochastic)
